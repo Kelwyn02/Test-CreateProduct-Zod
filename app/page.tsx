@@ -83,13 +83,13 @@ export default function Home() {
 
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
           <div className="min-h-screen flex-1 rounded-sm md:min-h-min">
-            <ProductInfo /> {/* precisa arrumar */}
+            <ProductInfo />
             <ProductContent />
             <ProductConfig />
             <ProductImageAndVideo />
             <ProductSEO />
             <ProductRelatedAndSales />
-            <ProductCustomOptions /> {/* validar este aqui depois */}
+            <ProductCustomOptions />
             <ProductOnWebsites />
             <ProductDesign />
             <ProductGiftOptions />

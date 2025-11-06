@@ -39,12 +39,12 @@ export function ProductCustomOptions() {
             price: 0,
             priceType: "",
             code: "",
-            maxChars: undefined,
+            maxChars: 256,
         },
     });
 
     const onSubmit: SubmitHandler<CustomOptionFormData> = (data) => {
-        console.log("OPÇÃO CUSTOMIZADA SALVA:", data);
+        console.log("Validando dados", data);
     };
 
     return (
@@ -114,8 +114,8 @@ export function ProductCustomOptions() {
                                                     <Select onValueChange={field.onChange} value={field.value}>
                                                         <SelectTrigger id="option-type"><SelectValue placeholder="Selecione..." /></SelectTrigger>
                                                         <SelectContent>
-                                                            <SelectItem value="dropdown">Dropdown</SelectItem>
-                                                            <SelectItem value="checkbox">Checkbox</SelectItem>
+                                                            <SelectItem value="option1">Opção 1</SelectItem>
+                                                            <SelectItem value="option2">Opção 2</SelectItem>
                                                         </SelectContent>
                                                     </Select>
                                                 )}

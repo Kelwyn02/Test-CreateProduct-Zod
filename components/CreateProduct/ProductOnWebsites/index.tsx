@@ -45,7 +45,7 @@ export function ProductOnWebsites() {
           
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             
-            <h3 className="text-white text-md font-semibold mb-6">Websites</h3>
+            <h3 className="text-neutral-100 text-md font-semibold mb-6">Websites</h3>
             
             <div className="space-y-4">
 

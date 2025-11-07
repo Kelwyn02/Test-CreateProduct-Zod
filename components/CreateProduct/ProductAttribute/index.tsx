@@ -1,10 +1,10 @@
 'use client'
 
 import {
-Accordion,
-AccordionContent,
-AccordionItem,
-AccordionTrigger,
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
 } from "@/components/ui/accordion";
 import { ProductAttributeForm } from "./form";
 
@@ -18,8 +18,8 @@ export function ProductAttribute() {
         </AccordionTrigger>
         <AccordionContent className="p-4">
 
-          <ProductAttributeForm/>
-          
+          <ProductAttributeForm />
+
         </AccordionContent>
       </AccordionItem>
     </Accordion>

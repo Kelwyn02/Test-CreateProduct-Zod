@@ -92,8 +92,8 @@ export default function Home() {
             <ProductCustomOptions />
             <ProductOnWebsites />
             <ProductDesign />
-            <ProductGiftOptions />
-            <ProductAttribute />
+            <ProductGiftOptions /> {/* refatorado */}
+            <ProductAttribute /> {/* refatorado */}
             <ProductDownload/> {/* refatorado */}
           </div>
         </div>

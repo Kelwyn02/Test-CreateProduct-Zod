@@ -13,7 +13,7 @@ import { Button } from "@/components/ui/button";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import {attributeSchema, AttributeFormData } from "./actions";
+import { attributeSchema, AttributeFormData } from "./actions";
 
 export function ProductAttributeForm() {
 

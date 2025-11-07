@@ -87,14 +87,14 @@ export default function Home() {
             <ProductContent />
             <ProductConfig />
             <ProductImageAndVideo />
-            <ProductSEO />
+            <ProductSEO /> {/* refatorado */}
             <ProductRelatedAndSales />
             <ProductCustomOptions />
             <ProductOnWebsites />
             <ProductDesign />
             <ProductGiftOptions />
             <ProductAttribute />
-            <ProductDownload/>
+            <ProductDownload/> {/* refatorado */}
           </div>
         </div>
 

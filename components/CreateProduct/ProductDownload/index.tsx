@@ -4,6 +4,7 @@ AccordionContent,
 AccordionItem,
 AccordionTrigger,
 } from "@/components/ui/accordion";
+import { ProductDownloadForm } from "./form";
 
 
 export function ProductDownload() {
@@ -16,7 +17,8 @@ export function ProductDownload() {
         </AccordionTrigger>
         <AccordionContent className="p-4">
 
-          
+          <ProductDownloadForm/>
+
         </AccordionContent>
       </AccordionItem>
     </Accordion>

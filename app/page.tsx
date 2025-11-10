@@ -9,25 +9,13 @@ import {
 } from "@/components/ui/breadcrumb"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
+
 import {
   SidebarInset,
   SidebarProvider,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
 import { Undo2Icon } from "lucide-react"
-
-import { ProductInfo } from "@/components/CreateProduct/ProductInfo"
-import { ProductContent } from "@/components/CreateProduct/ProductContent"
-import { ProductConfig } from "@/components/CreateProduct/ProductConfig"
-import { ProductImageAndVideo } from "@/components/CreateProduct/ProductImageAndVideo"
-import { ProductSEO } from "@/components/CreateProduct/ProductSEO"
-import { ProductRelatedAndSales } from "@/components/CreateProduct/ProductRelatedAndSales"
-import { ProductCustomOptions } from "@/components/CreateProduct/ProductCustomOptions"
-import { ProductOnWebsites } from "@/components/CreateProduct/ProductOnWebsites"
-import { ProductDesign } from "@/components/CreateProduct/ProductDesign"
-import { ProductGiftOptions } from "@/components/CreateProduct/ProductGiftOptions"
-import { ProductAttribute } from "@/components/CreateProduct/ProductAttribute"
-import { ProductDownload } from "@/components/CreateProduct/ProductDownload"
 
 export default function Home() {
   return (
@@ -83,22 +71,11 @@ export default function Home() {
 
         <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
           <div className="min-h-screen flex-1 rounded-sm md:min-h-min">
-            <ProductInfo />
-            <ProductContent />
-            <ProductConfig />
-            <ProductImageAndVideo />
-            <ProductSEO />
-            <ProductRelatedAndSales />
-            <ProductCustomOptions />
-            <ProductOnWebsites />
-            <ProductDesign />
-            <ProductGiftOptions />
-            <ProductAttribute />
-            <ProductDownload />
+            <h1>Teste</h1>
           </div>
         </div>
 
       </SidebarInset>
     </SidebarProvider>
-  )
+          )
 }

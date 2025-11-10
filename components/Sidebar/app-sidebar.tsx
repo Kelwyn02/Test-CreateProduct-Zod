@@ -112,7 +112,7 @@ const data = {
       items: [
         {
           title: "Produtos",
-          url: "#",
+          url: "/storage/product/create-product",
         },
         {
           title: "Categorias",
@@ -128,7 +128,7 @@ const data = {
       items: [
         {
           title: "Todos os clientes",
-          url: "#",
+          url: "/customer/create-customer",
         },
         {
           title: "Online agora",

@@ -1,78 +1,67 @@
 'use client'
 
-import { imageSchema, ImageFormData} from "./actions"
-
-import { Button } from "@/components/ui/button";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { CameraIcon } from "lucide-react";
-
-import { useForm, SubmitHandler, useWatch } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useFormContext, useWatch, FieldError } from "react-hook-form";
+import { GlobalProductFormData } from "../schema";
+import { Label } from "@/components/ui/label";
 
 export function ProductImageAndVideoForm() {
     const {
         register,
-        handleSubmit,
         control,
         formState: { errors },
-    } = useForm<ImageFormData>({
-        resolver: zodResolver(imageSchema),
-    });
+    } = useFormContext<GlobalProductFormData>();
 
     const uploadedImages = useWatch({
         control,
-        name: "images",
+        name: "productImageAndVideoImages",
     });
 
-    const onSubmit: SubmitHandler<ImageFormData> = (data) => {
-        console.log("Validando dados", data.images);
-    };
-
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+        <Accordion type="single" collapsible className="w-full m-4 pr-8">
+            <AccordionItem value="display" className="bg-neutral-900 rounded-lg border-none">
+                <AccordionTrigger className="p-4 items-center text-lg text-neutral-100 font-bold hover:no-underline rounded-sm">
+                    Imagens e vídeos
+                </AccordionTrigger>
+                <AccordionContent className="p-4">
+                    <input
+                        type="file"
+                        id="image-upload"
+                        className="hidden"
+                        multiple
+                        accept="image/png, image/jpeg, image/webp"
+                        {...register("productImageAndVideoImages")}
+                    />
 
-            <input
-                type="file"
-                id="image-upload"
-                className="hidden"
-                multiple
-                accept="image/png, image/jpeg, image/webp"
-                {...register("images")}
-            />
+                    <Label htmlFor="image-upload" className="flex items-center gap-4 cursor-pointer">
+                        <div className="border border-neutral-600 rounded-sm p-4 flex items-center justify-center h-20 w-20 shrink-0">
+                            <CameraIcon className="h-10 w-10 text-neutral-100" />
+                        </div>
 
-            <div className="flex flex-col md:flex-row justify-between md:items-center gap-6">
-                <label htmlFor="image-upload" className="flex items-center gap-4 cursor-pointer">
-                    <div className="border border-neutral-600 rounded-sm p-4 flex items-center justify-center h-20 w-20 shrink-0">
-                        <CameraIcon className="h-10 w-10 text-neutral-100" />
-                    </div>
+                        <div className="text-base leading-snug">
+                            {uploadedImages && uploadedImages.length > 0 ? (
+                                <div className="text-sm text-neutral-300">
+                                    {Array.from(uploadedImages).map((file: unknown) => (
+                                        <div key={(file as File).name}>{(file as File).name}</div>
+                                    ))}
+                                </div>
+                            ) : (
+                                <p className="text-cyan-500">
+                                    Localize ou arraste uma<br />imagem aqui
+                                </p>
+                            )}
+                        </div>
+                    </Label>
 
-                    <div className="text-base leading-snug">
-                        {uploadedImages && uploadedImages.length > 0 ? (
-                            <div className="text-sm text-neutral-300">
-                                {Array.from(uploadedImages).map(file => (
-                                    <div key={file.name}>{file.name}</div>
-                                ))}
-                            </div>
-                        ) : (
-                            <p className="text-cyan-500">
-                                Localize ou arraste uma<br />imagem aqui
-                            </p>
-                        )}
-                    </div>
-                </label>
 
-                <Button
-                    type="submit"
-                    variant="default"
-                    className="bg-cyan-600 hover:bg-cyan-700 text-neutral-100"
-                >
-                    Salvar
-                </Button>
-            </div>
-
-            {errors.images && (
-                <p className="text-sm text-red-500 mt-2">{errors.images.message}</p>
-            )}
-
-        </form>
+                    {errors.productImageAndVideoImages && (
+                        <p className="text-sm text-red-500 mt-2">
+                            {(errors.productImageAndVideoImages as FieldError).message}
+                        </p>
+                    )}
+                </AccordionContent>
+            </AccordionItem>
+        </Accordion>
     )
 }

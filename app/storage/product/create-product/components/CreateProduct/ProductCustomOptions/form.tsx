@@ -1,126 +1,137 @@
 'use client'
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-import { customOptionSchema, CustomOptionFormData } from "./actions"
+import { useFormContext, Controller, FieldError } from "react-hook-form";
+import { GlobalProductFormData } from "../schema";
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { ChevronDown, GripVerticalIcon, MoreHorizontalIcon, Trash2Icon } from "lucide-react";
 
 export function ProductCustomOptionsForm() {
     const {
         register,
         control,
-        handleSubmit,
         formState: { errors },
-    } = useForm<CustomOptionFormData>({
-        resolver: zodResolver(customOptionSchema),
-        defaultValues: {
-            title: "",
-            optionType: "",
-            required: false,
-            price: 0,
-            priceType: "",
-            code: "",
-            maxChars: 256,
-        },
-    });
+    } = useFormContext<GlobalProductFormData>();
 
-    const onSubmit: SubmitHandler<CustomOptionFormData> = (data) => {
-        console.log("Validando dados", data);
-    };
 
     return (
+        <Accordion type="single" collapsible className="w-full m-4 pr-8">
+            <AccordionItem value="display" className="bg-neutral-900 rounded-lg border-none">
+                <AccordionTrigger className="p-4 items-center text-lg text-neutral-100 font-bold hover:no-underline rounded-sm">
+                    Opções customizáveis
+                </AccordionTrigger>
+                <AccordionContent className="p-4">
 
-        <form onSubmit={handleSubmit(onSubmit)} >
-            <div className="grid grid-cols-1 md:grid-cols-[auto_1fr_auto_1fr_auto] gap-x-6 gap-y-4 items-center">
+                    <Accordion type="single" collapsible defaultValue="item-1">
+                        <AccordionItem value="item-1" className="border-b-0">
+                            <AccordionTrigger className="group bg-neutral-800 p-4 rounded-sm text-neutral-100 hover:no-underline [&>svg]:hidden mb-4">
+                                <div className="flex items-center justify-between w-full">
+                                    <div className="flex items-center gap-2">
+                                        <ChevronDown className="h-5 w-5 transition-transform duration-200 group-data-[state=open]:rotate-180" />
+                                        <GripVerticalIcon className="h-5 w-5 text-neutral-500 cursor-grab" />
+                                        <span className="font-semibold">Nova opção</span>
+                                    </div>
+                                    <div className="flex items-center gap-2">
+                                        <Button type="button" variant="ghost" size="icon" className="h-8 w-8 hover:bg-neutral-700 text-neutral-400">
+                                            <MoreHorizontalIcon className="h-5 w-5" />
+                                        </Button>
+                                        <Button type="button" variant="ghost" size="icon" className="h-8 w-8 hover:bg-neutral-700 text-neutral-400">
+                                            <Trash2Icon className="h-5 w-5" />
+                                        </Button>
+                                    </div>
+                                </div>
+                            </AccordionTrigger>
 
-                <Label htmlFor="title" className="text-neutral-100">Título</Label>
-                <div>
-                    <Input id="title" {...register("title")} />
-                    {errors.title && <p className="text-sm text-red-500 mt-1">{errors.title.message}</p>}
-                </div>
+                            <AccordionContent className="bg-neutral-800 p-6 rounded-sm">
+                                <div className="grid grid-cols-1 md:grid-cols-[auto_1fr_auto_1fr_auto] gap-x-6 gap-y-4 items-center">
 
-                <Label htmlFor="option-type" className="text-neutral-100 md:pl-4">Tipo de opção</Label>
-                <div>
-                    <Controller
-                        name="optionType"
-                        control={control}
-                        render={({ field }) => (
-                            <Select onValueChange={field.onChange} value={field.value}>
-                                <SelectTrigger id="option-type"><SelectValue placeholder="Selecione..." /></SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="option1">Opção 1</SelectItem>
-                                    <SelectItem value="option2">Opção 2</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        )}
-                    />
-                    {errors.optionType && <p className="text-sm text-red-500 mt-1">{errors.optionType.message}</p>}
-                </div>
+                                    <Label htmlFor="productCustomOptionsTitle" className="text-neutral-100">Título</Label>
+                                    <div>
+                                        <Input id="productCustomOptionsTitle" {...register("productCustomOptionsTitle")} />
+                                        {errors.productCustomOptionsTitle && <p className="text-sm text-red-500 mt-1">{(errors.productCustomOptionsTitle as FieldError).message}</p>}
+                                    </div>
 
-                <Controller
-                    name="required"
-                    control={control}
-                    render={({ field }) => (
-                        <div className="flex items-center gap-2 md:pl-4 neutral-100space-nowrap">
-                            <Checkbox
-                                id="required"
-                                checked={field.value}
-                                onCheckedChange={field.onChange}
-                            />
-                            <Label htmlFor="required" className="text-neutral-100">Obrigatório</Label>
-                        </div>
-                    )}
-                />
+                                    <Label htmlFor="option-type" className="text-neutral-100 md:pl-4">Tipo de opção</Label>
+                                    <div>
+                                        <Controller
+                                            name="productCustomOptionsType"
+                                            control={control}
+                                            render={({ field }) => (
+                                                <Select onValueChange={field.onChange} value={field.value}>
+                                                    <SelectTrigger id="option-type"><SelectValue placeholder="Selecione..." /></SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="option1">Opção 1</SelectItem>
+                                                        <SelectItem value="option2">Opção 2</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                            )}
+                                        />
+                                        {errors.productCustomOptionsType && <p className="text-sm text-red-500 mt-1">{(errors.productCustomOptionsType as FieldError).message}</p>}
+                                    </div>
 
-                <Label htmlFor="price" className="text-neutral-100">Preço</Label>
-                <div>
-                    <Input id="price" type="number" step="0.01" {...register("price")} />
-                    {errors.price && <p className="text-sm text-red-500 mt-1">{errors.price.message}</p>}
-                </div>
+                                    <Controller
+                                        name="productCustomOptionsRequired"
+                                        control={control}
+                                        render={({ field }) => (
+                                            <div className="flex items-center gap-2 md:pl-4 neutral-100space-nowrap">
+                                                <Checkbox
+                                                    id="productCustomOptionsRequired"
+                                                    checked={field.value}
+                                                    onCheckedChange={field.onChange}
+                                                />
+                                                <Label htmlFor="productCustomOptionsRequired" className="text-neutral-100">Obrigatório</Label>
+                                            </div>
+                                        )}
+                                    />
 
-                <Label htmlFor="price-type" className="text-neutral-100 md:pl-4">Tipo de preço</Label>
-                <div>
-                    <Controller
-                        name="priceType"
-                        control={control}
-                        render={({ field }) => (
-                            <Select onValueChange={field.onChange} value={field.value}>
-                                <SelectTrigger id="price-type"><SelectValue placeholder="Selecione..." /></SelectTrigger>
-                                <SelectContent>
-                                    <SelectItem value="fixed">Fixo</SelectItem>
-                                    <SelectItem value="percent">Percentual</SelectItem>
-                                </SelectContent>
-                            </Select>
-                        )}
-                    />
-                    {errors.priceType && <p className="text-sm text-red-500 mt-1">{errors.priceType.message}</p>}
-                </div>
+                                    <Label htmlFor="productCustomOptionsPrice" className="text-neutral-100">Preço</Label>
+                                    <div>
+                                        <Input id="productCustomOptionsPrice" type="number" step="0.01" {...register("productCustomOptionsPrice")} />
+                                        {errors.productCustomOptionsPrice && <p className="text-sm text-red-500 mt-1">{(errors.productCustomOptionsPrice as FieldError).message}</p>}
+                                    </div>
 
-                <div></div> {/* tá aqui por causa de alinhamento */}
+                                    <Label htmlFor="productCustomOptionsPriceType" className="text-neutral-100 md:pl-4">Tipo de preço</Label>
+                                    <div>
+                                        <Controller
+                                            name="productCustomOptionsPriceType"
+                                            control={control}
+                                            render={({ field }) => (
+                                                <Select onValueChange={field.onChange} value={field.value}>
+                                                    <SelectTrigger id="productCustomOptionsPriceType"><SelectValue placeholder="Selecione..." /></SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="fixed">Fixo</SelectItem>
+                                                        <SelectItem value="percent">Percentual</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                            )}
+                                        />
+                                        {errors.productCustomOptionsPriceType && <p className="text-sm text-red-500 mt-1">{(errors.productCustomOptionsPriceType as FieldError).message}</p>}
+                                    </div>
 
-                <Label htmlFor="code" className="text-neutral-100">Código</Label>
-                <div>
-                    <Input id="code" {...register("code")} />
-                </div>
+                                    <Label htmlFor="productCustomOptionsCode" className="text-neutral-100 md:pl-4">Código</Label>
 
-                <Label htmlFor="max-chars" className="text-neutral-100 md:pl-4">Máx. Caracteres</Label>
-                <div>
-                    <Input id="max-chars" type="number" {...register("maxChars")} />
-                    {errors.maxChars && <p className="text-sm text-red-500 mt-1">{errors.maxChars.message}</p>}
-                </div>
-            </div>
+                                    <div></div>
 
-            <div className="flex justify-end mt-6">
-                <Button type="submit" className="bg-cyan-600 hover:bg-cyan-700 text-neutral-100">
-                    Salvar
-                </Button>
-            </div>
-        </form>
+                                    <div>
+                                        <Input id="productCustomOptionsCode" {...register("productCustomOptionsCode")} />
+                                    </div>
+
+                                    <Label htmlFor="productCustomOptionsMaxChars" className="text-neutral-100 md:pl-4">Máx. Caracteres</Label>
+                                    <div>
+                                        <Input id="max-chars" type="number" {...register("productCustomOptionsMaxChars")} />
+                                        {errors.productCustomOptionsMaxChars && <p className="text-sm text-red-500 mt-1">{(errors.productCustomOptionsMaxChars as FieldError).message}</p>}
+                                    </div>
+                                </div>
+                            </AccordionContent>
+                        </AccordionItem>
+                    </Accordion>
+                </AccordionContent>
+            </AccordionItem>
+        </Accordion>
     )
 }

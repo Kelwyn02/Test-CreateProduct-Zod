@@ -13,16 +13,16 @@ export function PageBreadcrumb() {
             <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
                     <BreadcrumbLink href="#">
-                        Estoque
+                        Aba 1
                     </BreadcrumbLink>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem className="hidden md:block">
-                    <BreadcrumbPage>Produtos</BreadcrumbPage>
+                    <BreadcrumbPage>Categoria da aba</BreadcrumbPage>
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
-                    <BreadcrumbPage>Novo produto</BreadcrumbPage>
+                    <BreadcrumbPage>Subcategoria da aba</BreadcrumbPage>
                 </BreadcrumbItem>
             </BreadcrumbList>
         </Breadcrumb>

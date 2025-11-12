@@ -1,14 +1,17 @@
 import { z } from "zod";
 
 export const designSchema = z.object({
-  theme: z.string(),
-  layout: z.string(),
-  productOptions: z.string(),
-  layoutUpdate: z.string(),
-})
-.refine(data => data.theme, { message: "Tema é obrigatório.", path: ["theme"] })
-.refine(data => data.layout, { message: "Layout é obrigatório.", path: ["layout"] })
-.refine(data => data.productOptions, { message: "Opção de produto é obrigatória.", path: ["productOptions"] })
-.refine(data => data.layoutUpdate, { message: "Atualização de layout é obrigatória.", path: ["layoutUpdate"] });
+  productDesignTheme: z.string().optional()
+    .refine(data => data, { message: "Tema é obrigatório.", path: ["productDesignTheme"] }),
+
+  productDesignLayout: z.string().optional()
+    .refine(data => data, { message: "Layout é obrigatório.", path: ["productDesignLayout"] }),
+
+  productDesignOptions: z.string().optional()
+    .refine(data => data, { message: "Opção de produto é obrigatória.", path: ["productDesignOptions"] }),
+
+  productDesignLayoutUpdate: z.string().optional()
+    .refine(data => data, { message: "Atualização de layout é obrigatória.", path: ["productDesignLayoutUpdate"] }),
+});
 
 export type DesignFormData = z.infer<typeof designSchema>;

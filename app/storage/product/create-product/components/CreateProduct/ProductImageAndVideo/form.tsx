@@ -48,7 +48,7 @@ export function ProductImageAndVideoForm() {
                                 </div>
                             ) : (
                                 <p className="text-cyan-500">
-                                    Localize ou arraste uma<br />imagem aqui
+                                    Localize ou arraste uma imagem aqui
                                 </p>
                             )}
                         </div>

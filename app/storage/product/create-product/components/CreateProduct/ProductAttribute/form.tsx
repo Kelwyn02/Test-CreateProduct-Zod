@@ -45,7 +45,7 @@ export function ProductAttributeForm() {
                             control={control}
                             render={({ field }) => (
                                 <Select onValueChange={field.onChange} value={field.value}>
-                                    <SelectTrigger id="productAttributeActivity" className="w-32">
+                                    <SelectTrigger id="productAttributeActivity" className="w-full md:w-1/4">
                                         <SelectValue placeholder="Selecione..." />
                                     </SelectTrigger>
                                     <SelectContent>

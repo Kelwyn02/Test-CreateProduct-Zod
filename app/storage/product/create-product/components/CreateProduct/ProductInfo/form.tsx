@@ -52,7 +52,7 @@ export function ProductInfoForm() {
                                     control={control}
                                     render={({ field }) => (
                                         <Select onValueChange={field.onChange} value={field.value}>
-                                            <SelectTrigger id="attributes">
+                                            <SelectTrigger id="attributes" className="w-full">
                                                 <SelectValue placeholder="Selecione..." />
                                             </SelectTrigger>
                                             <SelectContent>
@@ -88,54 +88,64 @@ export function ProductInfoForm() {
                             <div className="space-y-2">
                                 <Label className="text-neutral-100">Peso</Label>
                                 <div className="flex gap-4">
-                                    <div className="flex-1 space-y-1">
+                                    <div className="w-1/2 space-y-1">
                                         <Input className="flex-1" type="number" step="0.01" {...register("productInfoWeight")} />
                                         {errors.productInfoWeight && <p className="text-sm text-red-500 mt-1">{errors.productInfoWeight.message}</p>}
                                     </div>
-                                    <Controller
-                                        name="productInfoWeightUnit"
-                                        control={control}
-                                        render={({ field }) => (
-                                            <Select onValueChange={field.onChange} value={field.value}>
-                                                <SelectTrigger className="w-[150px]">
-                                                    <SelectValue placeholder="Unidade" />
-                                                </SelectTrigger>
-                                                <SelectContent>
-                                                    <SelectItem value="kg">kg</SelectItem>
-                                                    <SelectItem value="g">g</SelectItem>
-                                                </SelectContent>
-                                            </Select>
-                                        )}
-                                    />
+                                    <div className="w-1/2 space-y-1">
+                                        <Controller
+                                            name="productInfoWeightUnit"
+                                            control={control}
+                                            render={({ field }) => (
+                                                <Select onValueChange={field.onChange} value={field.value}>
+                                                    <SelectTrigger className="w-full">
+                                                        <SelectValue placeholder="Unidade" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="kg">kg</SelectItem>
+                                                        <SelectItem value="g">g</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                            )}
+                                        />
+                                    </div>
                                 </div>
                             </div>
 
                             <div className="space-y-2">
                                 <Label htmlFor="category" className="text-neutral-100">Categoria</Label>
-                                <Controller
-                                    name="productInfoCategory"
-                                    control={control}
-                                    render={({ field }) => (
-                                        <Select onValueChange={field.onChange} value={field.value}>
-                                            <SelectTrigger id="category">
-                                                <SelectValue placeholder="Selecionar categoria..." />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="cat1">Categoria 1</SelectItem>
-                                                <SelectItem value="cat2">Categoria 2</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                    )}
-                                />
-                                {errors.productInfoCategory && <p className="text-sm text-red-500 mt-1">{errors.productInfoCategory.message}</p>}
-                                <Button
-                                    type="button"
-                                    variant="default"
-                                    className="bg-cyan-600 hover:bg-cyan-800 text-neutral-100 font-semibold"
-                                >
-                                    Nova categoria
-                                </Button>
+
+                                <div className="flex gap-4 items-start">
+
+                                    <div className="flex-1 space-y-1">
+                                        <Controller
+                                            name="productInfoCategory"
+                                            control={control}
+                                            render={({ field }) => (
+                                                <Select onValueChange={field.onChange} value={field.value}>
+                                                    <SelectTrigger id="category" className="w-full">
+                                                        <SelectValue placeholder="Selecionar categoria..." />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="cat1">Categoria 1</SelectItem>
+                                                        <SelectItem value="cat2">Categoria 2</SelectItem>
+                                                    </SelectContent>
+                                                </Select>
+                                            )}
+                                        />
+                                        {errors.productInfoCategory && <p className="text-sm text-red-500 mt-1">{errors.productInfoCategory.message}</p>}
+                                    </div>
+
+                                    <Button
+                                        type="button"
+                                        variant="default"
+                                        className="bg-cyan-600 hover:bg-cyan-700 text-neutral-100 font-semibold"
+                                    >
+                                        Nova categoria
+                                    </Button>
+                                </div>
                             </div>
+
                         </div>
 
                         <div className="space-y-6">
@@ -152,7 +162,7 @@ export function ProductInfoForm() {
                                     control={control}
                                     render={({ field }) => (
                                         <Select onValueChange={field.onChange} value={field.value}>
-                                            <SelectTrigger id="fiscal-class">
+                                            <SelectTrigger id="fiscal-class" className="w-full">
                                                 <SelectValue placeholder="Selecionar..." />
                                             </SelectTrigger>
                                             <SelectContent>
@@ -170,7 +180,7 @@ export function ProductInfoForm() {
                                     control={control}
                                     render={({ field }) => (
                                         <Select onValueChange={field.onChange} value={field.value}>
-                                            <SelectTrigger id="stock-status">
+                                            <SelectTrigger id="stock-status" className="w-full">
                                                 <SelectValue placeholder="Selecionar..." />
                                             </SelectTrigger>
                                             <SelectContent>
@@ -190,7 +200,7 @@ export function ProductInfoForm() {
                                     control={control}
                                     render={({ field }) => (
                                         <Select onValueChange={field.onChange} value={field.value}>
-                                            <SelectTrigger id="visibility">
+                                            <SelectTrigger id="visibility" className="w-full">
                                                 <SelectValue placeholder="Catálogo / Localizar" />
                                             </SelectTrigger>
                                             <SelectContent>
@@ -209,7 +219,7 @@ export function ProductInfoForm() {
                                     control={control}
                                     render={({ field }) => (
                                         <Select onValueChange={field.onChange} value={field.value}>
-                                            <SelectTrigger id="origin-country">
+                                            <SelectTrigger id="origin-country" className="w-full">
                                                 <SelectValue placeholder="Selecionar..." />
                                             </SelectTrigger>
                                             <SelectContent>

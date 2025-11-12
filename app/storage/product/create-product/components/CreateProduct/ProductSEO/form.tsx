@@ -29,7 +29,9 @@ export function ProductSeoForm() {
               <div className="space-y-2">
                 <Label htmlFor="url" className="text-neutral-100">URL</Label>
                 <Input id="productSeoUrl" {...register("productSeoUrl")} />
-                {errors.productSeoUrl && <p className="text-sm text-red-500 mt-1">{(errors.productSeoUrl).message}</p>}
+                <p className="text-sm text-red-500 mt-1 h-5">
+                  {errors.productSeoUrl ? errors.productSeoUrl.message : ''}
+                </p>
               </div>
 
               <div className="space-y-2">
@@ -39,7 +41,9 @@ export function ProductSeoForm() {
                   className="min-h-[150px] resize-y"
                   {...register("productSeoKeywords")}
                 />
-                {errors.productSeoKeywords && <p className="text-sm text-red-500 mt-1">{(errors.productSeoKeywords).message}</p>}
+                <p className="text-sm text-red-500 mt-1 h-5">
+                  {errors.productSeoKeywords ? errors.productSeoKeywords.message : ''}
+                </p>
               </div>
             </div>
 
@@ -47,7 +51,9 @@ export function ProductSeoForm() {
               <div className="space-y-2">
                 <Label htmlFor="title" className="text-neutral-100">Título</Label>
                 <Input id="productSeoTitle" {...register("productSeoTitle")} />
-                {errors.productSeoTitle && <p className="text-sm text-red-500 mt-1">{(errors.productSeoTitle).message}</p>}
+                <p className="text-sm text-red-500 mt-1 h-5">
+                  {errors.productSeoTitle ? errors.productSeoTitle.message : ''}
+                </p>
               </div>
               <div className="space-y-2">
                 <Label htmlFor="description" className="text-neutral-100">Descrição</Label>
@@ -56,9 +62,12 @@ export function ProductSeoForm() {
                   className="min-h-[150px] resize-y"
                   {...register("productSeoDescription")}
                 />
-                {errors.productSeoDescription && <p className="text-sm text-red-500 mt-1">{(errors.productSeoDescription).message}</p>}
+                <p className="text-sm text-red-500 mt-1 h-5">
+                  {errors.productSeoDescription ? errors.productSeoDescription.message : ''}
+                </p>
               </div>
             </div>
+
           </div>
 
         </AccordionContent>

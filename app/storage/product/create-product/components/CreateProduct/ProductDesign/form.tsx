@@ -43,9 +43,9 @@ export function ProductDesignForm() {
                                 name="productDesignTheme"
                                 control={control}
                                 render={({ field }) => (
-                                    <div className="w-full">
+                                    <div className="w-full md:w-1/4">
                                         <Select onValueChange={field.onChange} value={field.value}>
-                                            <SelectTrigger id="theme">
+                                            <SelectTrigger id="theme" className="w-full">
                                                 <SelectValue placeholder="Selecione um tema..." />
                                             </SelectTrigger>
                                             <SelectContent>
@@ -69,9 +69,9 @@ export function ProductDesignForm() {
                                 name="productDesignLayout"
                                 control={control}
                                 render={({ field }) => (
-                                    <div className="w-full">
+                                    <div className="w-full md:w-1/4">
                                         <Select onValueChange={field.onChange} value={field.value}>
-                                            <SelectTrigger id="layout">
+                                            <SelectTrigger id="layout" className="w-full">
                                                 <SelectValue placeholder="Selecione um layout..." />
                                             </SelectTrigger>
                                             <SelectContent>
@@ -95,9 +95,9 @@ export function ProductDesignForm() {
                                 name="productDesignOptions"
                                 control={control}
                                 render={({ field }) => (
-                                    <div className="w-full">
+                                    <div className="w-full md:w-1/4">
                                         <Select onValueChange={field.onChange} value={field.value}>
-                                            <SelectTrigger id="product-options">
+                                            <SelectTrigger id="product-options" className="w-full">
                                                 <SelectValue placeholder="Selecione uma opção..." />
                                             </SelectTrigger>
                                             <SelectContent>
@@ -120,9 +120,9 @@ export function ProductDesignForm() {
                                 name="productDesignLayoutUpdate"
                                 control={control}
                                 render={({ field }) => (
-                                    <div className="w-full">
+                                    <div className="w-full md:w-1/4">
                                         <Select onValueChange={field.onChange} value={field.value}>
-                                            <SelectTrigger id="layout-update">
+                                            <SelectTrigger id="layout-update" className="w-full">
                                                 <SelectValue placeholder="Selecione uma opção..." />
                                             </SelectTrigger>
                                             <SelectContent>

@@ -18,6 +18,7 @@ import { ProductConfig } from "./components/CreateProduct/ProductConfig";
 import { ProductRelatedAndSales } from "./components/CreateProduct/ProductRelatedAndSales";
 
 import { globalProductSchema, GlobalProductFormData } from "./components/CreateProduct/schema";
+import { ArrowLeftIcon, RefreshCwIcon } from "lucide-react";
 
 
 export default function CreateProductPage() {
@@ -82,10 +83,18 @@ export default function CreateProductPage() {
     <FormProvider {...methods}>
       <form onSubmit={methods.handleSubmit(onSubmit)}>
 
-        <div className="flex justify-end mr-4">
-          <Button type="submit" className="text-neutral-100 bg-cyan-600 hover:bg-cyan-700">
-            Salvar
-          </Button>
+        <div className="flex justify-end mr-4 gap-4">
+            <Button variant="outline" className="text-neutral-100 border-neutral-700 hover:bg-neutral-800 bg-neutral-900">
+              <ArrowLeftIcon className="h-4 w-4 mr-2" />
+              Voltar
+            </Button>
+            <Button variant="outline" className="text-neutral-100 border-neutral-700 hover:bg-neutral-800 bg-neutral-900">
+              <RefreshCwIcon className="h-4 w-4 mr-2" />
+              Reiniciar
+            </Button>
+            <Button className="bg-cyan-600 hover:bg-cyan-700 text-white font-semibold">
+              Salvar
+            </Button>
         </div>
 
         <ProductInfoForm />

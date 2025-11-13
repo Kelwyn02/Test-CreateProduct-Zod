@@ -29,8 +29,8 @@ export function ProductCustomOptionsForm() {
                     <div className="mb-4 flex justify-end gap-4">
                         <Button
                             type="button"
-                            variant="default"
-                            className=" bg-neutral-700 hover:bg-neutral-800 text-neutral-100 font-semibold"
+                            variant="outline"
+                            className=" text-neutral-100 border-neutral-700 hover:bg-neutral-800 bg-neutral-900 font-semibold"
                         >
                             Importar opções
 

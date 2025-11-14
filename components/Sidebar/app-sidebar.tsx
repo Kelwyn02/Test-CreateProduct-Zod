@@ -128,7 +128,7 @@ const data = {
       items: [
         {
           title: "Todos os clientes",
-          url: "/customer/create-customer",
+          url: "/customer",
         },
         {
           title: "Online agora",

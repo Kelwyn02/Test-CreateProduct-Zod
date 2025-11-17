@@ -1,13 +1,52 @@
 {
-  "posts": [
-    { "id": "1", "title": "a title", "views": 100 },
-    { "id": "2", "title": "another title", "views": 200 }
-  ],
-  "comments": [
-    { "id": "1", "text": "a comment about post 1", "postId": "1" },
-    { "id": "2", "text": "another comment about post 1", "postId": "1" }
-  ],
-  "profile": {
-    "name": "typicode"
-  }
+  "customers": [
+    {
+      "id": "85a3",
+      "customerWebsite": "main",
+      "customerGroup": "Geral",
+      "customerDisableAutoGroup": true,
+      "customerFirstName": "Teste",
+      "customerLastName": "Testando",
+      "customerEmail": "teste@email.com",
+      "customerBirthdate": "2025-11-05T03:00:00.000Z",
+      "customerFiscalNumber": "1",
+      "customerGender": "panzer",
+      "customerWelcomeEmail": "main",
+      "customerCode": "1",
+      "customerStatus": "Em processo",
+      "customerAssinatura": "Comum"
+    },
+    {
+      "id": "545e",
+      "customerWebsite": "main",
+      "customerGroup": "Geral",
+      "customerDisableAutoGroup": true,
+      "customerFirstName": "Teste 2",
+      "customerLastName": "Testando segundo 2º 1/2",
+      "customerEmail": "teste@email2.com",
+      "customerBirthdate": "2025-11-05T03:00:00.000Z",
+      "customerFiscalNumber": "2",
+      "customerGender": "panzer",
+      "customerWelcomeEmail": "main",
+      "customerCode": "2",
+      "customerStatus": "Finalizado",
+      "customerAssinatura": "Comum"
+    },
+    {
+      "id": "d736",
+      "customerWebsite": "secondary",
+      "customerGroup": "VIP",
+      "customerDisableAutoGroup": true,
+      "customerFirstName": "Cliente",
+      "customerLastName": "VIP",
+      "customerEmail": "vip@email.com",
+      "customerBirthdate": "2025-11-14T03:00:00.000Z",
+      "customerFiscalNumber": "3",
+      "customerGender": "male",
+      "customerWelcomeEmail": "secondary",
+      "customerCode": "3",
+      "customerStatus": "Finalizado",
+      "customerAssinatura": "Plus"
+    }
+  ]
 }

@@ -1,8 +1,10 @@
 'use client'
 
+import * as React from "react"
 import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
+import { useRouter } from 'next/navigation' 
 
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -27,11 +29,18 @@ const customerFormSchema = z.object({
     customerGender: z.string().optional(),
     customerWelcomeEmail: z.string().optional(),
     customerCode: z.string().optional(),
+
+    customerStatus: z.enum(["Em processo", "Finalizado"]),
+    customerAssinatura: z.enum(["Comum", "Plus"]),
 })
 
 type CustomerFormValues = z.infer<typeof customerFormSchema>
 
 export function CreateCustomerForm() {
+    
+    const router = useRouter()
+    const [isLoading, setIsLoading] = React.useState(false)
+    const [submitError, setSubmitError] = React.useState<string | null>(null)
 
     const form = useForm<CustomerFormValues>({
         resolver: zodResolver(customerFormSchema),
@@ -46,18 +55,42 @@ export function CreateCustomerForm() {
             customerGender: "panzer",
             customerWelcomeEmail: "main",
             customerCode: "",
+            customerStatus: "Em processo",
+            customerAssinatura: "Comum",
         },
     })
 
-    function onSubmit(data: CustomerFormValues) {
-        console.log("Validando dados", data)
+    async function onSubmit(data: CustomerFormValues) {
+        setIsLoading(true)
+        setSubmitError(null)
+        
+        try {
+            const response = await fetch('http://localhost:3001/customers', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data), 
+            });
+
+            if (!response.ok) {
+                throw new Error('Falha ao criar o cliente.')
+            }
+            
+            console.log("Cliente criado:", await response.json())
+            router.push('/customer')
+
+        } catch (error: any) {
+            console.error(error)
+            setSubmitError(error.message)
+        } finally {
+            setIsLoading(false)
+        }
     }
 
     return (
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
 
             <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] items-start gap-4">
-                <Label htmlFor="customerWebsite" className="text-neutral-100 pt-2">
+                <Label htmlFor="website" className="text-neutral-100 pt-2">
                     Associar ao website
                 </Label>
                 <div>
@@ -66,10 +99,7 @@ export function CreateCustomerForm() {
                         control={form.control}
                         render={({ field }) => (
                             <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                <SelectTrigger
-                                    id="customerWebsite"
-                                    className="w-full md:w-full bg-neutral-800 border-neutral-700 text-neutral-100 rounded-sm p-2"
-                                >
+                                <SelectTrigger id="website" className="w-full md:w-[60%] bg-neutral-800 border-neutral-700 text-neutral-100 rounded-sm p-2">
                                     <SelectValue placeholder="Website Principal" />
                                 </SelectTrigger>
                                 <SelectContent className="bg-neutral-800 border-neutral-700 text-neutral-100">
@@ -95,21 +125,44 @@ export function CreateCustomerForm() {
                         control={form.control}
                         render={({ field }) => (
                             <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                <SelectTrigger
-                                    id="group"
-                                    className="w-full md:w-full bg-neutral-800 border-neutral-700 text-neutral-100 rounded-sm p-2"
-                                >
+                                <SelectTrigger id="group" className="w-full md:w-[60%] bg-neutral-800 border-neutral-700 text-neutral-100 rounded-sm p-2">
                                     <SelectValue placeholder="Geral" />
                                 </SelectTrigger>
                                 <SelectContent className="bg-neutral-800 border-neutral-700 text-neutral-100">
-                                    <SelectItem value="general">Geral</SelectItem>
-                                    <SelectItem value="vip">VIP</SelectItem>
+                                    <SelectItem value="Geral">Geral</SelectItem>
+                                    <SelectItem value="VIP">VIP</SelectItem>
                                 </SelectContent>
                             </Select>
                         )}
                     />
                     <p className="text-sm text-red-500 mt-1 h-5">
                         {form.formState.errors.customerGroup?.message || '\u00A0'}
+                    </p>
+                </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] items-start gap-4">
+                <Label htmlFor="assinatura" className="text-neutral-100 pt-2">
+                    Assinatura
+                </Label>
+                <div>
+                    <Controller
+                        name="customerAssinatura"
+                        control={form.control}
+                        render={({ field }) => (
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <SelectTrigger id="assinatura" className="w-full md:w-[60%] bg-neutral-800 border-neutral-700 text-neutral-100 rounded-sm p-2">
+                                    <SelectValue placeholder="Selecione..." />
+                                </SelectTrigger>
+                                <SelectContent className="bg-neutral-800 border-neutral-700 text-neutral-100">
+                                    <SelectItem value="Comum">Comum</SelectItem>
+                                    <SelectItem value="Plus">Plus</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        )}
+                    />
+                    <p className="text-sm text-red-500 mt-1 h-5">
+                        {form.formState.errors.customerAssinatura?.message || '\u00A0'}
                     </p>
                 </div>
             </div>
@@ -128,27 +181,21 @@ export function CreateCustomerForm() {
                             />
                         )}
                     />
-                    <Label
-                        htmlFor="disable-auto-group"
-                        className="text-zinc-100"
-                    >
-                        Desativar alteração automática de grupo baseado no número
-                        de identificação fiscal
+                    <Label htmlFor="disable-auto-group" className="text-zinc-100">
+                        Desativar alteração automática de grupo...
                     </Label>
                 </div>
             </div>
 
             <hr className="border-neutral-800" />
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 gap-y-2">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
 
                 <div className="space-y-2">
                     <Label htmlFor="first-name" className="text-neutral-100">
                         Primeiro nome
                     </Label>
-                    <Input
-                        id="first-name"
-                        className="w-full bg-neutral-800 border-neutral-700 text-neutral-100 rounded-sm p-2"
+                    <Input id="first-name" className="w-full bg-neutral-800 border-neutral-700 text-neutral-100 rounded-sm p-2"
                         {...form.register("customerFirstName")}
                     />
                     <p className="text-sm text-red-500 mt-1 h-5">
@@ -160,24 +207,17 @@ export function CreateCustomerForm() {
                     <Label htmlFor="last-name" className="text-neutral-100">
                         Sobrenome
                     </Label>
-                    <Input
-                        id="last-name"
-                        className="w-full bg-neutral-800 border-neutral-700 text-neutral-100 rounded-sm p-2"
+                    <Input id="last-name" className="w-full bg-neutral-800 border-neutral-700 text-neutral-100 rounded-sm p-2"
                         {...form.register("customerLastName")}
                     />
                     <p className="text-sm text-red-500 mt-1 h-5">
                         {form.formState.errors.customerLastName?.message || '\u00A0'}
                     </p>
                 </div>
-
+                
                 <div className="space-y-2">
-                    <Label htmlFor="email" className="text-neutral-100">
-                        Email
-                    </Label>
-                    <Input
-                        id="email"
-                        type="email"
-                        className="w-full bg-neutral-800 border-neutral-700 text-neutral-100 rounded-sm p-2"
+                    <Label htmlFor="email" className="text-neutral-100">Email</Label>
+                    <Input id="email" type="email" className="w-full bg-neutral-800 border-neutral-700 text-neutral-100 rounded-sm p-2"
                         {...form.register("customerEmail")}
                     />
                     <p className="text-sm text-red-500 mt-1 h-5">
@@ -186,9 +226,7 @@ export function CreateCustomerForm() {
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="birthdate" className="text-neutral-100">
-                        Data de aniversário
-                    </Label>
+                    <Label htmlFor="birthdate" className="text-neutral-100">Data de aniversário</Label>
                     <Controller
                         name="customerBirthdate"
                         control={form.control}
@@ -204,21 +242,13 @@ export function CreateCustomerForm() {
                                     >
                                         <div className="flex items-center">
                                             <CalendarIcon className="mr-2 h-4 w-4" />
-                                            {field.value ? (
-                                                <span>{field.value.toLocaleDateString('pt-BR')}</span>
-                                            ) : (
-                                                <span>Selecione uma data</span>
-                                            )}
+                                            {field.value ? <span>{field.value.toLocaleDateString('pt-BR')}</span> : <span>Selecione uma data</span>}
                                         </div>
                                         <ChevronDownIcon className="h-4 w-4 text-muted-foreground" />
                                     </Button>
                                 </PopoverTrigger>
                                 <PopoverContent className="w-auto p-0 bg-neutral-800 border-neutral-700 text-neutral-100">
-                                    <Calendar
-                                        mode="single"
-                                        selected={field.value}
-                                        onSelect={field.onChange}
-                                    />
+                                    <Calendar mode="single" selected={field.value} onSelect={field.onChange} initialFocus />
                                 </PopoverContent>
                             </Popover>
                         )}
@@ -229,12 +259,8 @@ export function CreateCustomerForm() {
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="fiscal-number" className="text-neutral-100">
-                        Número fiscal
-                    </Label>
-                    <Input
-                        id="fiscal-number"
-                        className="w-full bg-neutral-800 border-neutral-700 text-neutral-100 rounded-sm p-2"
+                    <Label htmlFor="fiscal-number" className="text-neutral-100">Número fiscal</Label>
+                    <Input id="fiscal-number" className="w-full bg-neutral-800 border-neutral-700 text-neutral-100 rounded-sm p-2"
                         {...form.register("customerFiscalNumber")}
                     />
                     <p className="text-sm text-red-500 mt-1 h-5">
@@ -243,18 +269,13 @@ export function CreateCustomerForm() {
                 </div>
 
                 <div className="space-y-2">
-                    <Label htmlFor="gender" className="text-neutral-100">
-                        Gênero
-                    </Label>
+                    <Label htmlFor="gender" className="text-neutral-100">Gênero</Label>
                     <Controller
                         name="customerGender"
                         control={form.control}
                         render={({ field }) => (
                             <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                <SelectTrigger
-                                    id="gender"
-                                    className="w-full bg-neutral-800 border-neutral-700 text-neutral-100 rounded-sm p-2"
-                                >
+                                <SelectTrigger id="gender" className="w-full bg-neutral-800 border-neutral-700 text-neutral-100 rounded-sm p-2">
                                     <SelectValue placeholder="Panzerkampfwagen VI Tiger Ausf. B" />
                                 </SelectTrigger>
                                 <SelectContent className="bg-neutral-800 border-neutral-700 text-neutral-100">
@@ -272,21 +293,13 @@ export function CreateCustomerForm() {
                 </div>
 
                 <div className="space-y-2">
-                    <Label
-                        htmlFor="welcome-email"
-                        className="text-neutral-100"
-                    >
-                        Enviar email de bem-vindo através de:
-                    </Label>
+                    <Label htmlFor="welcome-email" className="text-neutral-100">Email de bem-vindo</Label>
                     <Controller
                         name="customerWelcomeEmail"
                         control={form.control}
                         render={({ field }) => (
                             <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                <SelectTrigger
-                                    id="welcome-email"
-                                    className="w-full bg-neutral-800 border-neutral-700 text-neutral-100 rounded-sm p-2"
-                                >
+                                <SelectTrigger id="welcome-email" className="w-full bg-neutral-800 border-neutral-700 text-neutral-100 rounded-sm p-2">
                                     <SelectValue placeholder="Website Principal" />
                                 </SelectTrigger>
                                 <SelectContent className="bg-neutral-800 border-neutral-700 text-neutral-100">
@@ -300,28 +313,51 @@ export function CreateCustomerForm() {
                         {form.formState.errors.customerWelcomeEmail?.message || '\u00A0'}
                     </p>
                 </div>
-
+                
                 <div className="space-y-2">
-                    <Label
-                        htmlFor="customer-code"
-                        className="text-neutral-100"
-                    >
-                        Código de cliente
-                    </Label>
-                    <Input
-                        id="customer-code"
-                        className="w-full bg-neutral-800 border-neutral-700 text-neutral-100 rounded-sm p-2"
+                    <Label htmlFor="customer-code" className="text-neutral-100">Código de cliente</Label>
+                    <Input id="customer-code" className="w-full bg-neutral-800 border-neutral-700 text-neutral-100 rounded-sm p-2"
                         {...form.register("customerCode")}
                     />
                     <p className="text-sm text-red-500 mt-1 h-5">
                         {form.formState.errors.customerCode?.message || '\u00A0'}
                     </p>
                 </div>
+
+                <div className="space-y-2">
+                    <Label htmlFor="status" className="text-neutral-100">Status</Label>
+                    <Controller
+                        name="customerStatus"
+                        control={form.control}
+                        render={({ field }) => (
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <SelectTrigger id="status" className="w-full bg-neutral-800 border-neutral-700 text-neutral-100 rounded-sm p-2">
+                                    <SelectValue placeholder="Selecione..." />
+                                </SelectTrigger>
+                                <SelectContent className="bg-neutral-800 border-neutral-700 text-neutral-100">
+                                    <SelectItem value="Em processo">Em processo</SelectItem>
+                                    <SelectItem value="Finalizado">Finalizado</SelectItem>
+                                </SelectContent>
+                            </Select>
+                        )}
+                    />
+                    <p className="text-sm text-red-500 mt-1 h-5">
+                        {form.formState.errors.customerStatus?.message || '\u00A0'}
+                    </p>
+                </div>
+
             </div>
 
-            <div className="flex justify-end pt-4">
-                <Button type="submit" className="bg-cyan-600 hover:bg-cyan-700 text-neutral-100 font-semibold">
-                    Criar cliente
+            <div className="flex justify-end pt-4 items-center gap-4">
+                {submitError && (
+                    <p className="text-sm text-red-500">{submitError}</p>
+                )}
+                <Button 
+                    type="submit" 
+                    className="bg-cyan-600 hover:bg-cyan-700 text-neutral-100 font-semibold"
+                    disabled={isLoading}
+                >
+                    {isLoading ? "Salvando..." : "Salvar Cliente"}
                 </Button>
             </div>
         </form>

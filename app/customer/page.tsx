@@ -3,7 +3,7 @@
 import { FooterRowsAndPages } from "./components/FooterRowsAndPages"
 import { HeaderButtons } from "./components/HeaderButtons"
 
-import { CustomerTable } from "./components/Table"
+import { CustomerTable } from "./components/CustomerTable"
 
 
 export default function CustomerPage() {

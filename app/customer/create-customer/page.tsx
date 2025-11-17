@@ -1,14 +1,10 @@
 'use client'
 
-import * as React from "react"
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { HeaderButtons } from "./components/HeaderButtons"
 import { CreateCustomerForm } from "./components/CreateCustomerForm"
 
-
 export default function CustomerAccountPage() {
-    const [date, setDate] = React.useState<Date | undefined>(undefined);
 
     return (
         <div className="min-h-screen bg-neutral-950 text-neutral-100 p-4">
@@ -39,7 +35,7 @@ export default function CustomerAccountPage() {
                                 Informações da conta
                             </h2>
 
-                            <CreateCustomerForm date={date} setDate={setDate} />
+                            <CreateCustomerForm />
 
                         </TabsContent>
                     </main>

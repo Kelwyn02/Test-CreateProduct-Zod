@@ -53,7 +53,7 @@ export function HeaderButtons() {
             Exportar CSV
         </Button>
         <Button asChild className="bg-cyan-600 hover:bg-cyan-700 text-neutral-100 font-semibold">
-            <Link href="/customer/create-customer">
+            <Link href="/customer/all-customer/create-customer">
                 Criar novo cliente
             </Link>
         </Button>

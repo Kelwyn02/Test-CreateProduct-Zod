@@ -76,7 +76,7 @@ export function CreateCustomerForm() {
             }
             
             console.log("Cliente criado:", await response.json())
-            router.push('/customer')
+            router.push('/customer/all-customer')
 
         } catch (error: any) {
             console.error(error)

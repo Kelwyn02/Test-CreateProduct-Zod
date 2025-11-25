@@ -5,7 +5,6 @@ const ACCEPTED_IMAGE_TYPES = ["image/jpeg", "image/jpg", "image/png", "image/web
 
 export const imageSchema = z.object({
   productImageAndVideoImages: z.any()
-    .refine((files) => files && files.length > 0, "É preciso enviar pelo menos uma imagem.")
     .refine((files) => files && files.length <= 5, "Você pode enviar no máximo 5 imagens.")
     .refine((files) => files && Array.from(files).every(
       (file: unknown) => (file as { size: number }).size <= MAX_FILE_SIZE

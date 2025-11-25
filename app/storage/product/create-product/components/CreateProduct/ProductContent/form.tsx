@@ -10,7 +10,6 @@ import {
     PilcrowIcon, RedoIcon, TableIcon, UnderlineIcon, UndoIcon
 } from "lucide-react";
 
-// 1. Imports Corrigidos
 import { useFormContext } from "react-hook-form";
 import { GlobalProductFormData } from "../schema";
 

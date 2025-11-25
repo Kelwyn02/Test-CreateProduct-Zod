@@ -1,19 +1,19 @@
 import { z } from "zod";
 
 export const customOptionSchema = z.object({
-    productCustomOptionsTitle: z.string().optional().refine(val => val && val.length > 0, "O título é obrigatório."),
+    productCustomOptionsTitle: z.string().optional().or(z.literal("")),
 
-    productCustomOptionsType: z.string().optional().refine(val => val, "O tipo de opção é obrigatório."),
+    productCustomOptionsType: z.string().optional().or(z.literal("")),
 
     productCustomOptionsRequired: z.boolean().optional(),
 
-    productCustomOptionsPrice: z.coerce.number().positive("O preço deve ser positivo.").optional(),
+    productCustomOptionsPrice: z.coerce.number().min(0, "O preço não pode ser negativo.").optional(),
 
-    productCustomOptionsPriceType: z.string().optional().refine(val => val, "O tipo de preço é obrigatório."),
+    productCustomOptionsPriceType: z.string().optional().or(z.literal("")),
 
     productCustomOptionsCode: z.string().optional(),
 
-    productCustomOptionsMaxChars: z.coerce.number().int("Deve ser um número inteiro.").positive("Deve ser positivo.").optional(),
+    productCustomOptionsMaxChars: z.coerce.number().int("Deve ser um número inteiro.").min(0).optional(),
 });
 
 export type CustomOptionFormData = z.infer<typeof customOptionSchema>;

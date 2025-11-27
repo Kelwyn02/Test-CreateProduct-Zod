@@ -4,7 +4,7 @@ import * as React from "react"
 import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import * as z from "zod"
-import { useRouter } from 'next/navigation' 
+import { useRouter } from 'next/navigation'
 
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -29,15 +29,18 @@ const customerFormSchema = z.object({
     customerGender: z.string().optional(),
     customerWelcomeEmail: z.string().optional(),
     customerCode: z.string().optional(),
-
     customerStatus: z.enum(["Em processo", "Finalizado"]),
     customerAssinatura: z.enum(["Comum", "Plus"]),
 })
 
-type CustomerFormValues = z.infer<typeof customerFormSchema>
+export type CustomerFormValues = z.infer<typeof customerFormSchema>
 
-export function CreateCustomerForm() {
-    
+interface CreateCustomerFormProps {
+    initialData?: CustomerFormValues & { id: string };
+}
+
+export function CreateCustomerForm({ initialData }: CreateCustomerFormProps) {
+
     const router = useRouter()
     const [isLoading, setIsLoading] = React.useState(false)
     const [submitError, setSubmitError] = React.useState<string | null>(null)
@@ -45,38 +48,50 @@ export function CreateCustomerForm() {
     const form = useForm<CustomerFormValues>({
         resolver: zodResolver(customerFormSchema),
         defaultValues: {
-            customerWebsite: "main",
-            customerGroup: "general",
-            customerDisableAutoGroup: true,
-            customerFirstName: "",
-            customerLastName: "",
-            customerEmail: "",
-            customerFiscalNumber: "",
-            customerGender: "panzer",
-            customerWelcomeEmail: "main",
-            customerCode: "",
-            customerStatus: "Em processo",
-            customerAssinatura: "Comum",
+            customerWebsite: initialData?.customerWebsite || "main",
+            customerGroup: initialData?.customerGroup || "Geral",
+            customerDisableAutoGroup: initialData?.customerDisableAutoGroup ?? true,
+            customerFirstName: initialData?.customerFirstName || "",
+            customerLastName: initialData?.customerLastName || "",
+            customerEmail: initialData?.customerEmail || "",
+            customerBirthdate: initialData?.customerBirthdate || undefined,
+            customerFiscalNumber: initialData?.customerFiscalNumber || "",
+            customerGender: initialData?.customerGender || "panzer",
+            customerWelcomeEmail: initialData?.customerWelcomeEmail || "main",
+            customerCode: initialData?.customerCode || "",
+            customerStatus: initialData?.customerStatus || "Em processo",
+            customerAssinatura: initialData?.customerAssinatura || "Comum",
         },
     })
 
     async function onSubmit(data: CustomerFormValues) {
         setIsLoading(true)
         setSubmitError(null)
-        
-        try {
-            const response = await fetch('http://localhost:3001/customers', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data), 
-            });
 
-            if (!response.ok) {
-                throw new Error('Falha ao criar o cliente.')
+        try {
+            if (initialData) {
+                const response = await fetch(`http://localhost:3001/customers/${initialData.id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+
+                if (!response.ok) throw new Error('Falha ao atualizar o cliente.')
+                console.log("Cliente atualizado:", await response.json())
+
+            } else {
+                const response = await fetch('http://localhost:3001/customers', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data),
+                });
+
+                if (!response.ok) throw new Error('Falha ao criar o cliente.')
+                console.log("Cliente criado:", await response.json())
             }
-            
-            console.log("Cliente criado:", await response.json())
+
             router.push('/customer/all-customer')
+            router.refresh()
 
         } catch (error: any) {
             console.error(error)
@@ -214,7 +229,7 @@ export function CreateCustomerForm() {
                         {form.formState.errors.customerLastName?.message || '\u00A0'}
                     </p>
                 </div>
-                
+
                 <div className="space-y-2">
                     <Label htmlFor="email" className="text-neutral-100">Email</Label>
                     <Input id="email" type="email" className="w-full bg-neutral-800 border-neutral-700 text-neutral-100 rounded-sm p-2"
@@ -248,7 +263,7 @@ export function CreateCustomerForm() {
                                     </Button>
                                 </PopoverTrigger>
                                 <PopoverContent className="w-auto p-0 bg-neutral-800 border-neutral-700 text-neutral-100">
-                                    <Calendar mode="single" selected={field.value} onSelect={field.onChange} initialFocus />
+                                    <Calendar mode="single" selected={field.value} onSelect={field.onChange}/>
                                 </PopoverContent>
                             </Popover>
                         )}
@@ -276,7 +291,7 @@ export function CreateCustomerForm() {
                         render={({ field }) => (
                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                                 <SelectTrigger id="gender" className="w-full bg-neutral-800 border-neutral-700 text-neutral-100 rounded-sm p-2">
-                                    <SelectValue placeholder="Panzerkampfwagen VI Tiger Ausf. B" />
+                                    <SelectValue placeholder="Selecione..." />
                                 </SelectTrigger>
                                 <SelectContent className="bg-neutral-800 border-neutral-700 text-neutral-100">
                                     <SelectItem value="panzer">Panzerkampfwagen VI Tiger Ausf. B</SelectItem>
@@ -300,7 +315,7 @@ export function CreateCustomerForm() {
                         render={({ field }) => (
                             <Select onValueChange={field.onChange} defaultValue={field.value}>
                                 <SelectTrigger id="welcome-email" className="w-full bg-neutral-800 border-neutral-700 text-neutral-100 rounded-sm p-2">
-                                    <SelectValue placeholder="Website Principal" />
+                                    <SelectValue placeholder="Selecione..." />
                                 </SelectTrigger>
                                 <SelectContent className="bg-neutral-800 border-neutral-700 text-neutral-100">
                                     <SelectItem value="main">Website Principal</SelectItem>
@@ -313,7 +328,7 @@ export function CreateCustomerForm() {
                         {form.formState.errors.customerWelcomeEmail?.message || '\u00A0'}
                     </p>
                 </div>
-                
+
                 <div className="space-y-2">
                     <Label htmlFor="customer-code" className="text-neutral-100">Código de cliente</Label>
                     <Input id="customer-code" className="w-full bg-neutral-800 border-neutral-700 text-neutral-100 rounded-sm p-2"
@@ -352,12 +367,15 @@ export function CreateCustomerForm() {
                 {submitError && (
                     <p className="text-sm text-red-500">{submitError}</p>
                 )}
-                <Button 
-                    type="submit" 
+                <Button
+                    type="submit"
                     className="bg-cyan-600 hover:bg-cyan-700 text-neutral-100 font-semibold"
                     disabled={isLoading}
                 >
-                    {isLoading ? "Salvando..." : "Salvar Cliente"}
+                    {isLoading
+                        ? "Carregando..."
+                        : (initialData ? "Atualizar Cliente" : "Salvar Cliente")
+                    }
                 </Button>
             </div>
         </form>

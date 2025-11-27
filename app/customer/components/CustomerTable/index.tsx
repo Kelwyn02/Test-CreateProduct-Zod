@@ -1,6 +1,5 @@
 'use client'
 
-import * as React from "react"
 import {
     MoreHorizontalIcon,
     CheckIcon,
@@ -30,8 +29,8 @@ import {
 } from "@/components/ui/table"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Badge } from "@/components/ui/badge"
+import { useRouter } from "next/navigation"
 
-// --- Tipos ---
 export type Customer = {
     id: string;
     customerFirstName: string;
@@ -42,7 +41,7 @@ export type Customer = {
 }
 
 interface CustomerTableProps {
-    customers?: Customer[]; // Tornei opcional (?) para evitar erro de tipo
+    customers?: Customer[];
     loading: boolean;
     selectedIds: string[];
     isAllSelected: boolean;
@@ -50,7 +49,6 @@ interface CustomerTableProps {
     onSelectAll: () => void;
 }
 
-// --- Componente Auxiliar ---
 const StatusBadge = ({ status }: { status: string }) => {
     if (status === "Finalizado") {
         return (
@@ -68,15 +66,20 @@ const StatusBadge = ({ status }: { status: string }) => {
     )
 }
 
-// --- Componente Principal ---
 export function CustomerTable({
-    customers = [], // Valor padrão vazio se for undefined
+    customers = [],
     loading,
     selectedIds,
     isAllSelected,
     onSelectOne,
     onSelectAll
 }: CustomerTableProps) {
+
+    const router = useRouter()
+
+    const handleEdit = (id: string) => {
+        router.push(`/customer/${id}`)
+    }
 
     if (loading) {
         return <div className="p-8 text-center text-neutral-500">Carregando clientes...</div>;
@@ -156,7 +159,10 @@ export function CustomerTable({
                                                     Visualizar
                                                     <EyeIcon className="h-4 w-4 text-neutral-400" />
                                                 </DropdownMenuItem>
-                                                <DropdownMenuItem className="cursor-pointer hover:bg-neutral-800 flex justify-between items-center focus:bg-neutral-800 focus:text-neutral-100">
+                                                <DropdownMenuItem
+                                                    onClick={() => handleEdit(row.id)}
+                                                    className="cursor-pointer hover:bg-neutral-800 flex justify-between items-center focus:bg-neutral-800 focus:text-neutral-100"
+                                                >
                                                     Editar
                                                     <PencilIcon className="h-4 w-4 text-neutral-400" />
                                                 </DropdownMenuItem>
